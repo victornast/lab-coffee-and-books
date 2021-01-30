@@ -1,0 +1,15 @@
+<h2>Add a new place</h2>
+
+<form method="POST" action="/">
+    <label for="input-name">Name</label>
+    <input type="text" id="input-name" name="name" placeholder="Name" required/>
+
+    <label for="input-type">Type</label>
+    <select name="type" id="input-type" required>
+        <option value="" selected disabled>Type</option>
+        <option value="coffee_shop">Coffee Shop</option>
+        <option value="bookstore">Bookstore</option>
+    </select>
+
+    <button>Submit</button>
+</form>

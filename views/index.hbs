@@ -1,2 +1,12 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+
+{{#each places}}
+<a href="/places/{{ _id }}">
+    <h2>{{ name }}</h2>
+</a>
+<p>{{ type }}</p>
+<form action="/places/{{ _id }}/delete" method="POST">
+    <button>Delete</button>
+</form>
+{{/each}}
