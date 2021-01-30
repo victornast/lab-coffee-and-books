@@ -9,6 +9,11 @@ const serveFavicon = require('serve-favicon');
 const indexRouter = require('./routes/index');
 const placesRouter = require('./routes/places');
 
+const hbs = require('hbs');
+const hbsJson = require('hbs-json');
+
+hbs.registerHelper('json', hbsJson);
+
 const app = express();
 
 app.set('views', join(__dirname, 'views'));

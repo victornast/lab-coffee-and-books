@@ -17,7 +17,8 @@ router.post('/', (req, res, next) => {
   const data = req.body;
   Place.create({
     name: data.name,
-    type: data.type
+    type: data.type,
+    location: { coordinates: [data.longitude, data.latitude] }
   })
     .then((createdPlace) => {
       console.log('Created:', createdPlace);

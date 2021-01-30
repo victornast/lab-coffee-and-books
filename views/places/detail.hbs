@@ -3,3 +3,25 @@
 <h2>{{ type }}</h2>
 <a href="/places/{{ _id }}/edit">Update</a>
 {{/with}}
+<div id="map"></div>
+
+<script>
+  function initMap () {
+    const mapElement = document.getElementById('map');
+    const place = {{{ json place }}};
+    const map = new google.maps.Map(mapElement, {
+      center: {
+        lat: place.location.coordinates[1],
+        lng: place.location.coordinates[0]
+      },
+      zoom: 16
+    });
+    const marker = new google.maps.Marker({
+        position: {
+          lat: place.location.coordinates[1],
+          lng: place.location.coordinates[0]
+        },
+        map: map
+    })
+  }
+</script>

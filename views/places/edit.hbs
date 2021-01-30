@@ -9,5 +9,53 @@
         <option value="bookstore" {{#if place.isBook}}selected{{/if}}>Bookstore</option>
     </select>
     
+    <label for="input-latitude">Latitude</label>
+    <input id="input-latitude" type="number" name="latitude" placeholder="{{ place.location.coordinates.[1] }}" value="{{ place.location.coordinates.[1] }}" min="-90" max="90" step="any"/>
+
+    <label for="input-longitude">Longitude</label>
+    <input id="input-longitude" type="number" name="longitude" placeholder="{{ place.location.coordinates.[0] }}" value="{{ place.location.coordinates.[0] }}" min="-180" max="180" step="any"/>
+
     <button>Submit changes</button>
 </form>
+
+<div id="map"></div>
+
+<script>
+  function initMap () {
+    const mapElement = document.getElementById('map');
+    const latitudeInput = document.getElementById('input-latitude');
+    const longitudeInput = document.getElementById('input-longitude');
+    const place = {{{ json place }}};
+    const map = new google.maps.Map(mapElement, {
+      center: {
+        lat: place.location.coordinates[1] || 52.518728,
+        lng: place.location.coordinates[0] || 13.399115
+      },
+      zoom: 16
+    });
+    
+    let marker = new google.maps.Marker({
+        position: {
+          lat: place.location.coordinates[1],
+          lng: place.location.coordinates[0]
+        },
+        map
+      });
+    map.addListener('click', (position) => {
+      const latitude = position.latLng.lat();
+      const longitude = position.latLng.lng();
+      latitudeInput.value = latitude.toFixed(6);
+      longitudeInput.value = longitude.toFixed(6);
+      if (marker) {
+        marker.setMap(null);
+      }
+      marker = new google.maps.Marker({
+        position: {
+          lat: latitude,
+          lng: longitude
+        },
+        map
+      });
+    })
+  }
+</script>

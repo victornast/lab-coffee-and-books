@@ -1,12 +1,50 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
 
-{{#each places}}
-<a href="/places/{{ _id }}">
-    <h2>{{ name }}</h2>
-</a>
-<p>{{ type }}</p>
-<form action="/places/{{ _id }}/delete" method="POST">
-    <button>Delete</button>
-</form>
-{{/each}}
+<section class="map-list">
+
+<ul>
+    {{#each places}}
+        <li>
+            <a href="/places/{{ _id }}">
+                <h2>{{ name }}</h2>
+            </a>
+            <p>{{ type }}</p>
+            <form action="/places/{{ _id }}/delete" method="POST">
+                <button>Delete</button>
+            </form>
+        </li>
+    {{/each}}
+</ul>
+
+<div id="map-index"></div>
+
+</section>
+
+
+<script>
+    function initMap () {
+    const mapElement = document.getElementById('map-index');
+    const places = {{{ json places }}};
+    const map = new google.maps.Map(mapElement, {
+      center: {
+        lat: 52.518728,
+        lng: 13.399115
+      },
+      zoom: 8
+    });
+    
+    for (let place of places) {
+      const marker = new google.maps.Marker({
+        position: {
+          lat: place.location.coordinates[1],
+          lng: place.location.coordinates[0]
+        },
+        map: map
+      })
+      marker.addListener('click', () => {
+        window.location = `/places/${place._id}`;
+      });
+    }
+  }
+</script>

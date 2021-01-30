@@ -21,10 +21,15 @@ router.get('/:id', (req, res, next) => {
 router.post('/:id', (req, res, next) => {
   const id = req.params.id;
   const data = req.body;
-  Place.findByIdAndUpdate(id, {
-    name: data.name,
-    type: data.type
-  })
+  Place.findByIdAndUpdate(
+    id,
+    {
+      name: data.name,
+      type: data.type,
+      location: { coordinates: [data.longitude, data.latitude] }
+    },
+    { useFindAndModify: false }
+  )
     .then(() => res.redirect(`/places/${id}`))
     .catch((error) => next(error));
 });
