@@ -19,6 +19,30 @@ const terminate = (error) => {
   });
 };
 
+const fs = require('fs');
+const filePath = './public/scripts/loadmapsapi.js';
+fs.access(filePath, fs.F_OK, (err) => {
+  if (err) {
+    const API_KEY = process.env.API_KEY;
+    const apiScriptData = `
+      window.onload = function() {
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src =
+          'https://maps.googleapis.com/maps/api/js?key=' +
+          '${API_KEY}' +
+          '&callback=initMap';
+        script.setAttribute("defer", "defer");
+        document.body.appendChild(script);
+      };
+      `;
+    fs.writeFile('./public/scripts/loadmapsapi.js', apiScriptData, (err) => {});
+    return;
+  }
+
+  //file exists
+});
+
 process.on('SIGINT', () => terminate());
 process.on('SIGTERM', () => terminate());
 process.on('uncaughtException', (error) => {
